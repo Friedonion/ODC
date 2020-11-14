@@ -12,6 +12,8 @@ public class Enemy : MonoBehaviour
     float currentSpeed;
     public Animator anim;
     public GameObject Target;
+    public GameObject Bullet;
+    public GameObject trans; 
     
     void Start()
     {
@@ -72,6 +74,17 @@ public class Enemy : MonoBehaviour
                 IDLE();
 
             }
+        }
+    }
+
+    public void MakeBullet()
+    {
+        if (Target != null)
+        {
+            GameObject bullet = Instantiate(Bullet, trans.transform.position, Quaternion.identity);
+            bullet.GetComponent<bullet>().BulletDamage = Damage;
+            bullet.GetComponent<bullet>().target = Target;
+            Destroy(bullet, 0.5f);
         }
     }
     void Update()

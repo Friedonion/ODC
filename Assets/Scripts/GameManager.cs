@@ -1,4 +1,4 @@
-﻿using System.Collections;
+﻿//using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -12,7 +12,6 @@ public class GameManager : MonoBehaviour
     void Start()
     {
         InvokeRepeating("GameIsEnd", 0.0f, 0.2f);
-        InvokeRepeating("EnemySpawn", 0.0f, 3.0f);
     }
 
     public void GameIsEnd()
@@ -29,11 +28,6 @@ public class GameManager : MonoBehaviour
             end = true;
             Time.timeScale = 0;
         }
-    }
-
-    public void EnemySpawn()
-    {
-        Instantiate(enemy, enemyPoint.GetComponent<Transform>().position, Quaternion.identity);
     }
 }
 

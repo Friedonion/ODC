@@ -279,7 +279,9 @@ MonoBehaviour:
   speed: 1
   anim: {fileID: 0}
   Target: {fileID: 0}
-  Splash: {fileID: 0}
+  Splash: {fileID: 5016738874078965537, guid: 5382a3bf855c89541bf953462da861fb, type: 3}
+  Bullet: {fileID: 0}
+  trans: {fileID: 0}
 --- !u!114 &846400172
 MonoBehaviour:
   m_ObjectHideFlags: 0

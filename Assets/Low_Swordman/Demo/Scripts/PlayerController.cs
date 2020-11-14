@@ -15,12 +15,23 @@ public abstract class PlayerController :MonoBehaviour
     public Rigidbody2D m_rigidbody;
     protected CapsuleCollider2D m_CapsulleCollider;
     protected Animator m_Anim;
+    public SpriteRenderer[] m_SpriteRenderer;
+    protected GameObject m_Model;
 
     [Header("[Setting]")]
     public float MoveSpeed = 6;
     public int JumpCount = 2;
     public float jumpForce = 15f;
+    public float Damage = 10;
 
+
+    private void Awake()
+    {
+      
+        m_Model = this.transform.Find("model").gameObject;
+        m_SpriteRenderer = m_Model.GetComponentsInChildren<SpriteRenderer>();
+
+    }
     protected void AnimUpdate()
     {
 
@@ -158,7 +169,7 @@ public abstract class PlayerController :MonoBehaviour
                 else
                 {
 
-                    Debug.Log("안부딪힘");
+             
 
                 }
 
@@ -175,9 +186,83 @@ public abstract class PlayerController :MonoBehaviour
 
     }
 
+    public bool b_FireDamage = false;
+    public void FireDamage(float Damage, float Time)
+    {
+
+        if (!b_FireDamage)
+            StartCoroutine(StartFireDamage(Damage, Time));
+
+    }
+    IEnumerator StartFireDamage(float Damage, float Time)
+    {
+        float timetic = 0;
+        b_FireDamage = true;
+
+
+        Vector3 tmpcolor = new Vector3(1, 0.30f, 0.10f);
+
+        SetCharacterColor( tmpcolor, 1.0f);
+        while (true)
+        {
+            if (timetic > Time)
+                break;
+
+
+            timetic++;
+
+
+            Damaged(Damage, new Vector2(0, 0));
+
+
+            yield return new WaitForSeconds(0.1f);
+        }
+
+        SetCharacterColor(new Vector3(1, 1, 1), 1.0f);
+
+
+        b_FireDamage = false;
+
+    }
+
+
+    public void SetCharacterColor(Vector3 colorvalue, float alphavlaue)
+    {
+
+        for (int i = 0; i < m_SpriteRenderer.Length; i++)
+        {
+            m_SpriteRenderer[i].color = new Color(colorvalue.x, colorvalue.y, colorvalue.z, alphavlaue);
+
+        }
+
+    }
 
 
     protected abstract void LandingEvent();
+    public abstract void Damaged(float m_damged,Vector2 dir);
 
+    public abstract void DefaulAttack_Collider(GameObject obj);
+    public abstract void Skill_1Attack_Collider(GameObject obj);
+    public abstract void Skill_2Attack_Collider(GameObject obj);
+    public abstract void Skill_3Attack_Collider(GameObject obj);
+    public abstract void Skill_4Attack_Collider(GameObject obj);
+
+
+
+    public virtual void DefaultAttack_Anim_1_Enter() { }
+    public virtual void DefaultAttack_Anim_1_Exit() { }
+
+    public virtual void SkillAttack_Anim_1_Enter() { }
+    public virtual void SkillAttack_Anim_1_Exit() { }
+
+    public virtual void SkillAttack_Anim_2_Enter() { }
+    public virtual void SkillAttack_Anim_2_Exit() { }
+
+
+    public virtual void SkillAttack_Anim_3_Enter() { }
+    public virtual void SkillAttack_Anim_3_Exit() { }
+
+    public virtual void SkillAttack_Anim_4_Enter() { }
+    public virtual void SkillAttack_Anim_4_Exit() { }
 
 }
