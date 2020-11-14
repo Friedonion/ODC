@@ -14,6 +14,8 @@ public class PlayerUnit : MonoBehaviour
     public Animator anim;
     public GameObject Target;
     public GameObject Splash;
+    public GameObject Bullet;
+    public GameObject trans;
 
     void Start()
     {
@@ -31,7 +33,7 @@ public class PlayerUnit : MonoBehaviour
 
     public void SplashDamage()
     {
-        GameObject splash = Instantiate(Splash, transform.position, Quaternion.identity);
+        GameObject splash = Instantiate(Splash, trans.transform.position, Quaternion.identity);
         splash.GetComponent<Splash>().SplashDamage = Damage;
         splash.GetComponent<Splash>().str = "Enemy";
         Destroy(splash, 0.5f);
@@ -54,6 +56,16 @@ public class PlayerUnit : MonoBehaviour
        
         anim.SetInteger("Player", 2);
         currentSpeed = speed;
+    }
+    public void MakeBullet()
+    {
+        if (Target != null)
+        {
+            GameObject bullet = Instantiate(Bullet, trans.transform.position, Quaternion.identity);
+            bullet.GetComponent<bullet>().BulletDamage = Damage;
+            bullet.GetComponent<bullet>().target = Target;
+            Destroy(bullet, 0.5f);
+        }
     }
 
     void UpdateTarget() // 공격 대상 설정 

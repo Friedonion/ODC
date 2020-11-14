@@ -1,4 +1,5 @@
-﻿using System.Collections;
+﻿using System;
+using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
 
@@ -227,8 +228,64 @@ public class Swordman : PlayerController
 
     }
 
+    public override void Damaged(float m_damged, Vector2 dir)
+    {
+
+        // 피 달게 한다. 
+
+    }
+
+    public override void DefaulAttack_Collider(GameObject obj)
+    {
+
+        //Debug.Log("Attack11" + obj);
+        if (obj.CompareTag("Monster"))
+        {
+        //    Debug.Log("Attack22"+ obj);
+            Vector2 Knockdir = obj.transform.position - this.transform.position;
+            obj.transform.root.GetComponent<Mon_Bass>().Damaged(Damage, Knockdir.normalized*1.5f, 0.2f);            
+        }
 
 
+    }
+    public override void DefaultAttack_Anim_1_Enter()
+    {
+    
+  
+    }
+
+    public override void DefaultAttack_Anim_1_Exit()
+    {
+   
+    }
 
 
+    public override void SkillAttack_Anim_3_Enter()
+    {
+ 
+
+    }
+
+    public override void SkillAttack_Anim_3_Exit()
+    {
+   
+
+
+    }
+
+    public override void Skill_1Attack_Collider(GameObject obj)
+    {
+    }
+
+    public override void Skill_2Attack_Collider(GameObject obj)
+    {
+    }
+
+    public override void Skill_3Attack_Collider(GameObject obj)
+    {
+    }
+
+    public override void Skill_4Attack_Collider(GameObject obj)
+    {
+    }
 }
