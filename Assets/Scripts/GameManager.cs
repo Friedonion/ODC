@@ -5,10 +5,11 @@ using UnityEngine;
 public class GameManager : MonoBehaviour
 {
     public GameObject ETower;
-    public GameObject PTower;
+    public GameObject PTower1;
+    public GameObject PTower2;
     private bool end = false;
-    public GameObject enemy;
-    public GameObject enemyPoint;
+    //public GameObject enemy;
+    //public GameObject enemyPoint;
     void Start()
     {
         InvokeRepeating("GameIsEnd", 0.0f, 0.2f);
@@ -22,7 +23,7 @@ public class GameManager : MonoBehaviour
             end = true;
             Time.timeScale = 0;
         }
-        if(PTower == null)
+        if(PTower1 == null || PTower2 == null)
         {
             Debug.Log("Lose");
             end = true;

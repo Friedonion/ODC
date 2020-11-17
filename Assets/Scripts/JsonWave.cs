@@ -32,6 +32,7 @@ public class JsonWave : MonoBehaviour
 {
     WaveData waveData;
     public GameObject enemyPoint;
+    public GameObject enemyPoint2;
     public GameObject[] enemy;
     public int level;
     float timer = 0;
@@ -70,6 +71,9 @@ public class JsonWave : MonoBehaviour
             {
                 k = waveData.waves.wave[i].row[j];
                 Instantiate(enemy[k], enemyPoint.GetComponent<Transform>().position, Quaternion.identity);
+                GameObject dummyenemy = Instantiate(enemy[k], enemyPoint2.GetComponent<Transform>().position, Quaternion.identity);
+                dummyenemy.GetComponent<Enemy>().speed = -(dummyenemy.GetComponent<Enemy>().speed);
+                dummyenemy.transform.localScale = new Vector3(1, 1, 1);
                 j++;
                 timer2 = 0;
                 if (waveData.waves.wave[i].row.Count <= j)
