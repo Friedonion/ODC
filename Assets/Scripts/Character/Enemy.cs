@@ -87,6 +87,17 @@ public class Enemy : MonoBehaviour
             Destroy(bullet, 0.5f);
         }
     }
+    public void MakeFireball()
+    {
+        if (Target != null)
+        {
+            GameObject bullet = Instantiate(Bullet, trans.transform.position, Quaternion.identity);
+            bullet.GetComponent<Fireball>().BulletDamage = Damage;
+            bullet.GetComponent<Fireball>().target = Target;
+            bullet.GetComponent<Fireball>().str = "Player";
+            Destroy(bullet, 1.0f);
+        }
+    }
     void Update()
     {
         transform.Translate(Vector3.right * currentSpeed * Time.deltaTime);

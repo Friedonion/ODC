@@ -10,7 +10,6 @@ public class Splash : MonoBehaviour
     {
         if (other.tag == str)
         {
-           
             other.GetComponent<GetDamage>().GetD(SplashDamage);
         }
     }

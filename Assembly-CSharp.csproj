@@ -90,6 +90,7 @@
     <Compile Include="Assets\Scripts\Character\AllDamage.cs" />
     <Compile Include="Assets\Scripts\Character\Enemy.cs" />
     <Compile Include="Assets\Scripts\Character\EnemyTower.cs" />
+    <Compile Include="Assets\Scripts\Character\Fireball.cs" />
     <Compile Include="Assets\Scripts\Character\GetDamage.cs" />
     <Compile Include="Assets\Scripts\Character\PlayerTower.cs" />
     <Compile Include="Assets\Scripts\Character\PlayerUnit.cs" />
