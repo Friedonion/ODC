@@ -50,7 +50,7 @@ PrefabInstance:
     - target: {fileID: 1316137980486023321, guid: 785fb0ec891d6c2479f41277b7702c66,
         type: 3}
       propertyPath: m_Name
-      value: Ptower Variant
+      value: Ptower
       objectReference: {fileID: 0}
     - target: {fileID: 1316137980486023321, guid: 785fb0ec891d6c2479f41277b7702c66,
         type: 3}
@@ -60,7 +60,7 @@ PrefabInstance:
     - target: {fileID: 1316137980486023323, guid: 785fb0ec891d6c2479f41277b7702c66,
         type: 3}
       propertyPath: m_LocalPosition.x
-      value: 12.96
+      value: 13
       objectReference: {fileID: 0}
     - target: {fileID: 1316137980486023323, guid: 785fb0ec891d6c2479f41277b7702c66,
         type: 3}
@@ -117,6 +117,16 @@ PrefabInstance:
       propertyPath: m_LocalScale.x
       value: -1
       objectReference: {fileID: 0}
+    - target: {fileID: 1316137980626059373, guid: 785fb0ec891d6c2479f41277b7702c66,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c6c490502eb0e274d98c0f10e4f9c31a, type: 2}
+    - target: {fileID: 1316137981605212134, guid: 785fb0ec891d6c2479f41277b7702c66,
+        type: 3}
+      propertyPath: m_Materials.Array.data[0]
+      value: 
+      objectReference: {fileID: 2100000, guid: c6c490502eb0e274d98c0f10e4f9c31a, type: 2}
     m_RemovedComponents:
     - {fileID: 1316137980486023322, guid: 785fb0ec891d6c2479f41277b7702c66, type: 3}
     - {fileID: 162696337, guid: 785fb0ec891d6c2479f41277b7702c66, type: 3}
