@@ -1,8 +1,9 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class Fireball : MonoBehaviour
+using Photon.Pun;
+using Photon.Realtime;
+public class Fireball : MonoBehaviourPunCallbacks
 {
     
         public GameObject target;

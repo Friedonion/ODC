@@ -9,7 +9,7 @@ public class AllDamage : MonoBehaviour
     public GameObject particle;
 
     public void Attack()
-    {
+    {/*
         GameObject[] Enemies = GameObject.FindGameObjectsWithTag("Enemy");
         if (mintneed<=transform.parent.GetChild(0).GetComponent<UImanager>().mint && choconeed<=transform.parent.GetChild(0).GetComponent<UImanager>().choco)
         {
@@ -22,6 +22,6 @@ public class AllDamage : MonoBehaviour
                     GameObject Effect = Instantiate(particle, Enemy.GetComponent<Transform>().position, Quaternion.identity);
                     Destroy(Effect, 1.0f);
             }
-        }
+        }*/
     }
 }

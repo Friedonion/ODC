@@ -1,13 +1,12 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class PlayerTower : MonoBehaviour
+using Photon.Pun;
+public class PlayerTower : MonoBehaviourPunCallbacks
 {
     public float range;
     public float Damage;
     public GameObject Target;
-    public GameObject Bullet;
     public GameObject trans;
     public float AttackSpeed;
 
@@ -35,27 +34,27 @@ public class PlayerTower : MonoBehaviour
 
             if (nearestEnemy != null && shortestDistance <= range)
             {
-                Target = nearestEnemy;
-
-            }
-            else
-            {
-                Target = null;
+                photonView.RPC("nearest",RpcTarget.AllBuffered,nearestEnemy);
             }
         }
+    }
+    [PunRPC]
+    void nearest(GameObject nearestEnemy)
+    {
+        Target = nearestEnemy;
     }
     public void MakeBullet()
     {
         if (Target != null)
         {
-            GameObject bullet = Instantiate(Bullet, trans.transform.position, Quaternion.identity);
-            bullet.GetComponent<bullet>().BulletDamage = Damage;
-            bullet.GetComponent<bullet>().target = Target;
-            Destroy(bullet, 0.5f);
+            GameObject bullet = PhotonNetwork.Instantiate("bullet", trans.transform.position, Quaternion.identity);
+            bullet.GetComponent<bullet>().setter(Damage, Target);
         }
     }
     void Start()
     {
+        if (!PhotonNetwork.IsMasterClient)
+            return;
         InvokeRepeating("UpdateTarget", 0f, 0.2f); //0.2초에 한번씩만 0초부터
         InvokeRepeating("MakeBullet", 0f, AttackSpeed);
     }

@@ -2,60 +2,55 @@
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
-
+using Photon.Pun;
+using Photon.Realtime;
 public class UImanager : MonoBehaviour
 {
+    public int mobnum = 4, cardlen = 5;
     private static int max_mobnum = 20, max_cardlen = 10;
-    public int mobnum = 3, cardlen = 10, choco_per_second = 1, mint_per_second = 2,max_choco=100,max_mint=100;
-    public GameObject[] mobset = new GameObject[max_mobnum];
+    private string[] mobset = { "mintSword", "mintShield", "mintHammer", "mintArcher" };
     public Sprite[] mobimg = new Sprite[max_mobnum];
-    public int[] choconeed = new int[max_mobnum], mintneed = new int[max_mobnum];
     private int[] mobtag = new int[max_cardlen];
-    public float choco = 0, mint = 0;
-    public Text t1, t2;
-    public GameObject chocobar, mintbar, spawnpoint;
-    // Start is called before the first frame update
-    void Start()
+    public int[] choconeed = new int[max_mobnum], mintneed = new int[max_mobnum];
+    public GameObject[] img = new GameObject[5];
+    public Text Chocotext, Minttext;
+    public GameObject chocobar, mintbar, spawnpoint, gage;
+    void Awake()
     {
         for (int i = 0; i < cardlen; i++)
         {
             mobtag[i] = Random.Range(0, mobnum);
-            transform.GetChild(i).GetComponent<Image>().sprite = mobimg[mobtag[i]];
+            img[i].GetComponent<Image>().sprite = mobimg[mobtag[i]];
         }
     }
 
     // Update is called once per frame
     void Update()
     {
-        choco += Time.deltaTime * choco_per_second;
-        mint += Time.deltaTime * mint_per_second;
-        if (choco > max_choco)
-            choco = max_choco;
-        if (mint > max_mint)
-            mint = max_mint;
         for (int i = 0; i < cardlen; i++)
         {
-            if (choconeed[mobtag[i]] < choco && mintneed[mobtag[i]] < mint)
-                transform.GetChild(i).GetComponent<Image>().color = new Color(1, 1, 1, 1);
+            if (choconeed[mobtag[i]] < gage.GetComponent<Gage>().choco && mintneed[mobtag[i]] < gage.GetComponent<Gage>().mint)
+                img[i].GetComponent<Image>().color = new Color(1, 1, 1, 1);
             else
-                transform.GetChild(i).GetComponent<Image>().color = new Color(1, 1, 1, 0.5f);
+                img[i].GetComponent<Image>().color = new Color(1, 1, 1, 0.5f);
         }
-        chocobar.GetComponent<Image>().fillAmount = choco / max_choco;
-        mintbar.GetComponent<Image>().fillAmount = mint / max_mint;
-        t1.text = "Choco : " + (int)choco;
-        t2.text = "Mint : " + (int)mint;
+        chocobar.GetComponent<Image>().fillAmount = gage.GetComponent<Gage>().choco / gage.GetComponent<Gage>().max_choco;
+        mintbar.GetComponent<Image>().fillAmount = gage.GetComponent<Gage>().mint / gage.GetComponent<Gage>().max_mint;
+        Chocotext.text = "Choco : " + (int)gage.GetComponent<Gage>().choco;
+        Minttext.text = "Mint : " + (int)gage.GetComponent<Gage>().mint;
 
         for (int i = 0; i < cardlen; i++)
-            if (transform.GetChild(i).GetComponent<CardClick>().clicked)
+            if (img[i].GetComponent<CardClick>().clicked)
             {
-                transform.GetChild(i).GetComponent<CardClick>().clicked = false;
-                if (choconeed[mobtag[i]] <= choco && mintneed[mobtag[i]] <= mint)
+                img[i].GetComponent<CardClick>().clicked = false;
+                if (choconeed[mobtag[i]] <= gage.GetComponent<Gage>().choco && mintneed[mobtag[i]] <= gage.GetComponent<Gage>().mint)
                 {
-                    choco -= choconeed[mobtag[i]];
-                    mint -= mintneed[mobtag[i]];
-                    Instantiate(mobset[mobtag[i]], spawnpoint.transform.position, Quaternion.identity);
+                    gage.GetComponent<Gage>().AddToChoco(-1 * choconeed[mobtag[i]]);
+                    gage.GetComponent<Gage>().AddToMint(-1 * mintneed[mobtag[i]]);
+                    GameObject m = PhotonNetwork.Instantiate(mobset[mobtag[i]], spawnpoint.GetComponent<Transform>().position, Quaternion.identity);
+                    m.GetComponent<PlayerUnit>().photonView.RPC("reverse",RpcTarget.AllBuffered);
                     mobtag[i] = (mobtag[i] + Random.Range(1, mobnum)) % mobnum;
-                    transform.GetChild(i).GetComponent<Image>().sprite = mobimg[mobtag[i]];
+                    img[i].GetComponent<Image>().sprite = mobimg[mobtag[i]];
                 }
             }
 

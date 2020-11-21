@@ -1,10 +1,10 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using System.Reflection;
-
+using Photon.Pun;
 using UnityEngine;
 
-public class Enemy : MonoBehaviour
+public class Enemy : MonoBehaviourPunCallbacks
 {
     public float Damage;
     public float range;
@@ -70,9 +70,7 @@ public class Enemy : MonoBehaviour
             }
             else
             {
-                Target = null;
                 IDLE();
-
             }
         }
     }
@@ -81,25 +79,30 @@ public class Enemy : MonoBehaviour
     {
         if (Target != null)
         {
-            GameObject bullet = Instantiate(Bullet, trans.transform.position, Quaternion.identity);
-            bullet.GetComponent<bullet>().BulletDamage = Damage;
-            bullet.GetComponent<bullet>().target = Target;
-            Destroy(bullet, 0.5f);
+            GameObject bullet = PhotonNetwork.Instantiate("bullet", trans.transform.position, Quaternion.identity);
+            bullet.GetComponent<bullet>().setter(Damage, Target);
         }
     }
     public void MakeFireball()
     {
         if (Target != null)
         {
-            GameObject bullet = Instantiate(Bullet, trans.transform.position, Quaternion.identity);
+            GameObject bullet = PhotonNetwork.Instantiate("fireball", trans.transform.position, Quaternion.identity);
             bullet.GetComponent<Fireball>().BulletDamage = Damage;
             bullet.GetComponent<Fireball>().target = Target;
             bullet.GetComponent<Fireball>().str = "Player";
-            Destroy(bullet, 1.0f);
         }
+    }
+    [PunRPC]
+    public void reverse()
+    {
+        transform.localScale = new Vector3(1, 1, 1);
+        speed *= -1;
     }
     void Update()
     {
+        if (!PhotonNetwork.IsMasterClient)
+            return;
         transform.Translate(Vector3.right * currentSpeed * Time.deltaTime);
     }
 }

@@ -8,15 +8,17 @@ public class GameManager : MonoBehaviour
     public GameObject PTower1;
     public GameObject PTower2;
     private bool end = false;
-    //public GameObject enemy;
-    //public GameObject enemyPoint;
+    private void Awake()
+    {
+        Screen.SetResolution(960, 540, false);
+    }
     void Start()
     {
         InvokeRepeating("GameIsEnd", 0.0f, 0.2f);
     }
-
     public void GameIsEnd()
     {
+        
         if(ETower == null)
         {
             Debug.Log("end");

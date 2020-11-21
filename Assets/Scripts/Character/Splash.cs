@@ -1,8 +1,8 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class Splash : MonoBehaviour
+using Photon.Pun;
+public class Splash : MonoBehaviourPunCallbacks
 {
     public float SplashDamage;
     public string str;

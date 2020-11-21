@@ -4,8 +4,8 @@ using System.Collections.Generic;
 using System.Collections.Specialized;
 using System.Security.Cryptography;
 using UnityEngine;
-
-public class PlayerUnit : MonoBehaviour
+using Photon.Pun;
+public class PlayerUnit : MonoBehaviourPunCallbacks
 {
     public float range;
     public float Damage;
@@ -20,6 +20,7 @@ public class PlayerUnit : MonoBehaviour
     void Start()
     {
         currentSpeed = speed;
+        Debug.Log("speed : "+speed);
         anim = GetComponent<Animator>();
         anim.SetInteger("Player", 0);
         InvokeRepeating("UpdateTarget", 0f, 0.2f); //0.2초에 한번씩만 0초부터
@@ -36,7 +37,6 @@ public class PlayerUnit : MonoBehaviour
         GameObject splash = Instantiate(Splash, trans.transform.position, Quaternion.identity);
         splash.GetComponent<Splash>().SplashDamage = Damage;
         splash.GetComponent<Splash>().str = "Enemy";
-        Destroy(splash, 0.5f);
 
     }
 
@@ -62,9 +62,7 @@ public class PlayerUnit : MonoBehaviour
         if (Target != null)
         {
             GameObject bullet = Instantiate(Bullet, trans.transform.position, Quaternion.identity);
-            bullet.GetComponent<bullet>().BulletDamage = Damage;
-            bullet.GetComponent<bullet>().target = Target;
-            Destroy(bullet, 0.5f);
+            bullet.GetComponent<bullet>().setter(Damage, Target);
         }
     }
 
@@ -92,15 +90,16 @@ public class PlayerUnit : MonoBehaviour
             }
             else
             {
-                Target = null;
                 IDLE();
-                
             }
         }
     }
-
-    
-
+    [PunRPC]
+    public void reverse()
+    {
+        transform.localScale = new Vector3(-1, 1, 1);
+        speed *= -1;
+    }
     void Update()
     {
         transform.Translate(Vector3.left * currentSpeed * Time.deltaTime);

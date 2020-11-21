@@ -1,13 +1,13 @@
 ﻿using System.Collections;
 using System.Collections.Generic;
 using UnityEngine;
-
-public class EnemyTower : MonoBehaviour
+using Photon.Pun;
+using Photon.Realtime;
+public class EnemyTower : MonoBehaviourPunCallbacks
 {
     public float range;
     public float Damage;
     public GameObject Target;
-    public GameObject Bullet;
     public GameObject trans;
     public float AttackSpeed;
 
@@ -48,10 +48,8 @@ public class EnemyTower : MonoBehaviour
     {
         if(Target!=null)
         {
-            GameObject bullet = Instantiate(Bullet, trans.transform.position, Quaternion.identity);
-            bullet.GetComponent<bullet>().BulletDamage = Damage;
-            bullet.GetComponent<bullet>().target = Target;
-            Destroy(bullet, 0.5f);
+            GameObject bullet = PhotonNetwork.Instantiate("bullet", trans.transform.position, Quaternion.identity);
+            bullet.GetComponent<bullet>().photonView.RPC("setter",RpcTarget.AllBuffered,  Damage, Target);
         }
     }
     void Start()

@@ -2,8 +2,8 @@
 using System.Collections.Generic;
 using UnityEngine.UI;
 using UnityEngine;
-
-public class GetDamage : MonoBehaviour
+using Photon.Pun;
+public class GetDamage : MonoBehaviourPunCallbacks
 {
 
    
@@ -13,16 +13,27 @@ public class GetDamage : MonoBehaviour
 
     void Start()
     {
+        photonView.RPC("start", RpcTarget.AllBuffered);
+    }
+    [PunRPC]
+    private void start()
+    {
         Health = StartHealth;
     }
-    public void GetD(float damage)
+    [PunRPC]
+    private void sethealth(float damage)
     {
         Health -= damage;
         HealthBar.GetComponent<Image>().fillAmount = Health / StartHealth;
-        if (Health <= 0)
-        {
-            Destroy(gameObject);
-        }
     }
 
+    public void GetD(float damage)
+    {
+        photonView.RPC("sethealth", RpcTarget.AllBuffered, damage);
+        if (Health <= 0)
+        {
+            Debug.Log("dead");
+            PhotonNetwork.Destroy(gameObject);
+        }
+    }
 }

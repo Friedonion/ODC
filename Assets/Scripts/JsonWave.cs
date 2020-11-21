@@ -4,6 +4,8 @@ using System.Collections.Generic;
 using UnityEngine;
 using System.IO;
 using System.Text;
+using Photon.Pun;
+using Photon.Realtime;
 
 [Serializable]
 public class WaveData
@@ -28,12 +30,12 @@ public class Waves
     public List<WaveD> wave;
 }
 
-public class JsonWave : MonoBehaviour
+public class JsonWave : MonoBehaviourPunCallbacks
 {
     WaveData waveData;
     public GameObject enemyPoint;
     public GameObject enemyPoint2;
-    public GameObject[] enemy;
+    public string[] enemy = {"chocoSword","chocoWizard","chocoArcher"};
     public int level;
     float timer = 0;
     float timer2 = 0;
@@ -70,10 +72,10 @@ public class JsonWave : MonoBehaviour
             if (timer2 >= waveData.delay)
             {
                 k = waveData.waves.wave[i].row[j];
-                Instantiate(enemy[k], enemyPoint.GetComponent<Transform>().position, Quaternion.identity);
-                GameObject dummyenemy = Instantiate(enemy[k], enemyPoint2.GetComponent<Transform>().position, Quaternion.identity);
-                dummyenemy.GetComponent<Enemy>().speed = -(dummyenemy.GetComponent<Enemy>().speed);
-                dummyenemy.transform.localScale = new Vector3(1, 1, 1);
+                PhotonNetwork.Instantiate(enemy[k], enemyPoint.transform.position, Quaternion.identity);
+                Debug.Log(enemy[k]);
+                GameObject dummyenemy = PhotonNetwork.Instantiate(enemy[k], enemyPoint2.transform.position, Quaternion.identity);
+                dummyenemy.GetComponent<Enemy>().photonView.RPC("reverse", RpcTarget.AllBuffered);
                 j++;
                 timer2 = 0;
                 if (waveData.waves.wave[i].row.Count <= j)
